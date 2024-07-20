@@ -1,0 +1,58 @@
+use online_fees_payment;
+CREATE TABLE `student` (
+  `id` int(11) NOT NULL,
+  `firstname` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `marks` int(11) NOT NULL,
+  `mobile_no` int(11) NOT NULL,
+  `passing year` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+CREATE TABLE `college` (
+  `c_id` int(11) NOT NULL AUTO_INCREMENT,
+  `c_name` varchar(45) NOT NULL,
+  `location` varchar(45) NOT NULL,
+  `website` varchar(45) NOT NULL,
+  `enrollments` int(11) NOT NULL,
+  `faculty` varchar(45) NOT NULL,
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`c_id`),
+  KEY `id_idx` (`id`),
+  CONSTRAINT `id` FOREIGN KEY (`id`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+CREATE TABLE `course` (
+  `course_id` int(11) NOT NULL,
+  `course_name` varchar(45) NOT NULL,
+  `fees` int(11) NOT NULL,
+  `stream` varchar(45) NOT NULL,
+  `credit` int(11) NOT NULL,
+  `year` date NOT NULL,
+  `c_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`course_id`),
+  KEY `c_id_idx` (`c_id`),
+  CONSTRAINT `c_id` FOREIGN KEY (`c_id`) REFERENCES `college` (`c_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+CREATE TABLE `payment` (
+  `p_id` int(11) NOT NULL,
+  `amount` varchar(45) NOT NULL,
+  `currency` varchar(45) NOT NULL,
+  `methods` varchar(45) NOT NULL,
+  `date_of_pay` date NOT NULL,
+  `status` varchar(45) NOT NULL,
+  `bank details` varchar(45) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `course_id_idx` (`course_id`),
+  CONSTRAINT `course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+CREATE TABLE `transaction` (
+  `t_id` int(11) NOT NULL,
+  `recepit` varchar(45) NOT NULL,
+  `status` varchar(45) NOT NULL,
+  `sucess` varchar(45) NOT NULL,
+  `p_id` int(11) NOT NULL,
+  PRIMARY KEY (`t_id`),
+  KEY `p_id_idx` (`p_id`),
+  CONSTRAINT `p_id` FOREIGN KEY (`p_id`) REFERENCES `payment` (`p_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
